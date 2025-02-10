@@ -1,5 +1,5 @@
 {
-    "refresh_mills": 2000,
+    "refresh_mills": 500,
     "handlers": [
         {
             "type": "Numbers",
@@ -18,10 +18,48 @@
                 "name": "Last Number",
                 "method": "latest"
             }
+        },
+        {
+            "type": "Numbers",
+            "id": "avg",
+            "regex": ".*: (\\d+)",
+            "params": {
+                "name": "Avarage",
+                "method": "avg"
+            }
+        },
+        {
+            "type": "Numbers",
+            "id": "sum",
+            "regex": ".*: (\\d+)",
+            "params": {
+                "name": "Sum",
+                "method": "sum"
+            }
+        },
+        {
+            "type": "Counter",
+            "id": "count",
+            "regex": ".*: 1\\d?",
+            "params": {
+                "name": "Numbers starting with 1"
+            }
+        },
+        {
+            "type": "Graph",
+            "id": "graph",
+            "regex": ".*: (\\d+)",
+            "params": {
+                "name": "Graph",
+                "length": 100,
+                "height": 15
+            }
         }
     ],
     "layouts": [
-        
+        {
+            "type": "Pipe"
+        },
         {
             "type": "Line",
             "params": {
@@ -29,12 +67,35 @@
             },
             "handlers": [
                 {
-                    "id": "max_num",
-                    "params": {}
+                    "id": "max_num"
                 },
                 {
-                    "id": "last_num",
-                    "params": {}
+                    "id": "last_num"
+                },
+                {
+                    "id": "avg"
+                },
+                {
+                    "id": "sum"
+                }
+            ]
+        },
+        {
+            "type": "Line",
+            "params": {
+                "width": 100
+            },
+            "handlers": [
+                {
+                    "id": "count"
+                }
+            ]
+        },
+        {
+            "type": "Chunk",            
+            "handlers": [
+                {
+                    "id": "graph"
                 }
             ]
         }

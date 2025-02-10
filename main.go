@@ -3,14 +3,29 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"logterface/config"
 	"logterface/layouts"
-	"logterface/utils"
 	"os"
 	"time"
 )
 
 func main() {
-	hm, lm, refresh := utils.ParseConfig("./example/config.json")
+	hm, lm, refresh := config.ParseConfig("./example/config.json")
+	// hm.ProcessLog("number: 1")
+	// hm.ProcessLog("number: 2")
+	// hm.ProcessLog("number: 3")
+	// hm.ProcessLog("number: 4")
+	// hm.ProcessLog("number: 5")
+	// hm.ProcessLog("number: 6")
+	// hm.ProcessLog("number: 5")
+	// hm.ProcessLog("number: 4")
+	// hm.ProcessLog("number: 3")
+	// hm.ProcessLog("number: 3")
+	// hm.ProcessLog("number: 5")
+	// hm.ProcessLog("number: 6")
+	// lm.Print()
+	// return
+
 	go Printer(lm, refresh)
 	// Create a scanner to read from os.Stdin
 	scanner := bufio.NewScanner(os.Stdin)

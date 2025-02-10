@@ -1,10 +1,11 @@
-package utils
+package config
 
 import (
 	"encoding/json"
 	"fmt"
 	"logterface/handlers"
 	"logterface/layouts"
+	"logterface/utils"
 	"os"
 )
 
@@ -53,11 +54,23 @@ func ParseConfig(filePath string) (*handlers.HandlerManager, *layouts.LayoutMana
 		switch hc.Type {
 		case "Numbers":
 			methodName, _ := hc.Params["method"].(string)
-			method, _ := handlers.MethodFromString(Capitalize(methodName))
+			method, _ := handlers.MethodFromString(utils.Capitalize(methodName))
 			name, _ := hc.Params["name"].(string)
 			lh := handlers.NewNumbersHandler(name, hc.RegEx, method)
 			hm.AddHandler(lh)
 			handlersMap[hc.Id] = lh
+		case "Counter":
+			name, _ := hc.Params["name"].(string)
+			ch := handlers.NewCounterHandler(name, hc.RegEx)
+			hm.AddHandler(ch)
+			handlersMap[hc.Id] = ch
+		case "Graph":
+			name, _ := hc.Params["name"].(string)
+			length, _ := hc.Params["length"].(float64)
+			height, _ := hc.Params["height"].(float64)
+			gh := handlers.NewGraphHandler(name, hc.RegEx, int(length), int(height))
+			hm.AddHandler(gh)
+			handlersMap[hc.Id] = gh
 		}
 	}
 	lm := layouts.NewLayoutManager()
@@ -73,6 +86,12 @@ func ParseConfig(filePath string) (*handlers.HandlerManager, *layouts.LayoutMana
 				ll.AddHandler(handlersMap[hlc.Id])
 			}
 			lm.AddLayout(ll)
+		case "Chunk":
+			cl := layouts.NewChunkLayout()
+			for _, hlc := range lc.Handlers {
+				cl.AddHandler(handlersMap[hlc.Id])
+			}
+			lm.AddLayout(cl)
 		}
 	}
 	return &hm, &lm, config.Refresh
