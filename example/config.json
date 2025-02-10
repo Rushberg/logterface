@@ -1,0 +1,42 @@
+{
+    "refresh_mills": 2000,
+    "handlers": [
+        {
+            "type": "Numbers",
+            "id": "max_num",
+            "regex": ".*: (\\d+)",
+            "params": {
+                "name": "Max Number",
+                "method": "max"
+            }
+        },
+        {
+            "type": "Numbers",
+            "id": "last_num",
+            "regex": ".*: (\\d+)",
+            "params": {
+                "name": "Last Number",
+                "method": "latest"
+            }
+        }
+    ],
+    "layouts": [
+        
+        {
+            "type": "Line",
+            "params": {
+                "width": 100
+            },
+            "handlers": [
+                {
+                    "id": "max_num",
+                    "params": {}
+                },
+                {
+                    "id": "last_num",
+                    "params": {}
+                }
+            ]
+        }
+    ]
+}

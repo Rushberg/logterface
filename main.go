@@ -3,38 +3,15 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"logterface/handlers"
 	"logterface/layouts"
+	"logterface/utils"
 	"os"
 	"time"
 )
 
 func main() {
-	pipeHandler := handlers.NewPipeHandler()
-	numHandlers := []handlers.LogHandler{
-		handlers.NewNumbersHandler("Min", ".*: (\\d+)", handlers.Min),
-		handlers.NewNumbersHandler("Max", ".*: (\\d+)", handlers.Max),
-		handlers.NewNumbersHandler("Avg", ".*: (\\d+)", handlers.Avg),
-		handlers.NewNumbersHandler("Sum", ".*: (\\d+)", handlers.Sum),
-		handlers.NewNumbersHandler("Last", ".*: (\\d+)", handlers.Latest),
-	}
-
-	lineLayout := layouts.NewLineLayout(40)
-	pipeLayout := layouts.NewPipeLayout(pipeHandler)
-
-	hm := handlers.NewHandlerManager()
-	lm := layouts.NewLayoutManager()
-
-	lm.AddLayout(pipeLayout)
-	lm.AddLayout(lineLayout)
-	hm.AddHandler(pipeHandler)
-
-	for _, nh := range numHandlers {
-		hm.AddHandler(nh)
-		lineLayout.AddHandler(nh)
-	}
-
-	go Printer(&lm)
+	hm, lm, refresh := utils.ParseConfig("./example/config.json")
+	go Printer(lm, refresh)
 	// Create a scanner to read from os.Stdin
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -50,9 +27,9 @@ func main() {
 	}
 }
 
-func Printer(lm *layouts.LayoutManager) {
+func Printer(lm *layouts.LayoutManager, refresh int) {
 	for {
 		lm.Print()
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(time.Duration(refresh) * time.Millisecond)
 	}
 }

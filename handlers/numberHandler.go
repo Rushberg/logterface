@@ -17,6 +17,22 @@ const (
 	Latest
 )
 
+var methodMap = map[string]Method{
+	"Min":    Min,
+	"Max":    Max,
+	"Avg":    Avg,
+	"Sum":    Sum,
+	"Latest": Latest,
+}
+
+// Function to convert a string to a Method value
+func MethodFromString(name string) (Method, error) {
+	if method, ok := methodMap[name]; ok {
+		return method, nil
+	}
+	return 0, fmt.Errorf("unknown method: %s", name)
+}
+
 type NumbersHandler struct {
 	abstractLogHandler
 	method   Method
