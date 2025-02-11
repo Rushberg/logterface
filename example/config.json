@@ -36,7 +36,7 @@
                 "name": "Avarage",
                 "method": "avg"
             }
-        },        
+        },
         {
             "type": "Counter",
             "id": "count",
@@ -56,10 +56,20 @@
         },
         {
             "type": "Graph",
-            "id": "graph",
-            "regex": ".*: (\\d+)",
+            "id": "graph1",
+            "regex": ".*: (\\d{2})",
             "params": {
-                "name": "Graph",
+                "name": "First 2 digits Graph",
+                "length": 50,
+                "height": 15
+            }
+        },
+        {
+            "type": "Graph",
+            "id": "graph2",
+            "regex": ".*: \\d*(\\d{2})$",
+            "params": {
+                "name": "Last 2 digits Graph",
                 "length": 50,
                 "height": 15
             }
@@ -70,13 +80,16 @@
             "type": "Pipe"
         },
         {
-            "type": "Line",            
+            "type": "Line",
             "handlers": [
                 {
                     "id": "max_num"
                 },
                 {
-                    "id": "graph"
+                    "id": "graph1"
+                },
+                {
+                    "id": "graph2"
                 },
                 {
                     "id": "min_num"
@@ -84,11 +97,11 @@
             ]
         },
         {
-            "type": "Line",            
-            "handlers": [                
+            "type": "Line",
+            "handlers": [
                 {
                     "id": "count"
-                },                
+                },
                 {
                     "id": "sum"
                 }
