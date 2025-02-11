@@ -12,6 +12,15 @@
         },
         {
             "type": "Numbers",
+            "id": "min_num",
+            "regex": ".*: (\\d+)",
+            "params": {
+                "name": "Min Number",
+                "method": "min"
+            }
+        },
+        {
+            "type": "Numbers",
             "id": "last_num",
             "regex": ".*: (\\d+)",
             "params": {
@@ -27,16 +36,7 @@
                 "name": "Avarage",
                 "method": "avg"
             }
-        },
-        {
-            "type": "Numbers",
-            "id": "sum",
-            "regex": ".*: (\\d+)",
-            "params": {
-                "name": "Sum",
-                "method": "sum"
-            }
-        },
+        },        
         {
             "type": "Counter",
             "id": "count",
@@ -46,12 +46,21 @@
             }
         },
         {
+            "type": "Numbers",
+            "id": "sum",
+            "regex": ".*: (1\\d*)",
+            "params": {
+                "name": "Their Sum",
+                "method": "sum"
+            }
+        },
+        {
             "type": "Graph",
             "id": "graph",
             "regex": ".*: (\\d+)",
             "params": {
                 "name": "Graph",
-                "length": 100,
+                "length": 50,
                 "height": 15
             }
         }
@@ -61,41 +70,27 @@
             "type": "Pipe"
         },
         {
-            "type": "Line",
-            "params": {
-                "width": 100
-            },
+            "type": "Line",            
             "handlers": [
                 {
                     "id": "max_num"
                 },
                 {
-                    "id": "last_num"
+                    "id": "graph"
                 },
                 {
-                    "id": "avg"
-                },
-                {
-                    "id": "sum"
+                    "id": "min_num"
                 }
             ]
         },
         {
-            "type": "Line",
-            "params": {
-                "width": 100
-            },
-            "handlers": [
+            "type": "Line",            
+            "handlers": [                
                 {
                     "id": "count"
-                }
-            ]
-        },
-        {
-            "type": "Chunk",            
-            "handlers": [
+                },                
                 {
-                    "id": "graph"
+                    "id": "sum"
                 }
             ]
         }

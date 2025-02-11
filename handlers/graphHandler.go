@@ -7,6 +7,7 @@ import (
 	"math"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type GraphHandler struct {
@@ -62,19 +63,21 @@ func (gh *GraphHandler) GetValue() string {
 			min = val
 		}
 	}
-	height := gh.height*3 - 1
 	diff := max - min
 	finalArr := make([][]string, gh.height)
 	for i := range finalArr {
-		finalArr[i] = make([]string, gh.values.Length())
+		finalArr[i] = make([]string, gh.dataLength)
 		for j := range finalArr[i] {
 			finalArr[i][j] = " "
+			if j%2 == 0 {
+				finalArr[i][j] = "-"
+			}
 		}
 	}
-	prevRow := int(math.Floor(((slice[0] - min) / diff) * float64(height) / 3))
+	prevRow := int(math.Floor(((slice[0] - min) / diff) * float64(gh.height-1)))
 	for coulumn, val := range slice {
-		adjusted := ((val - min) / diff) * float64(height)
-		currRow := int(math.Floor(adjusted / 3))
+		adjusted := ((val - min) / diff) * float64(gh.height-1)
+		currRow := int(math.Floor(adjusted))
 		var direction int
 
 		if currRow > prevRow {
@@ -95,14 +98,25 @@ func (gh *GraphHandler) GetValue() string {
 
 		prevRow = currRow
 	}
-	res := fmt.Sprintf("%.2f\n", max)
-	for i := len(finalArr) - 1; i >= 0; i-- {
-		for j := 0; j < len(finalArr[i]); j++ {
-			res += finalArr[i][j]
+
+	res := ""
+	for row := len(finalArr) - 1; row >= 0; row-- {
+		avg_row_val := ""
+		if row == 0 {
+			avg_row_val = fmt.Sprintf("%.2f", min)
+		} else if row == len(finalArr)-1 {
+			avg_row_val = fmt.Sprintf("%.2f", max)
+		} else if row%2 == 0 {
+			row_range := diff / float64(gh.height)
+			avg_row_val = fmt.Sprintf("%.2f", row_range*float64(row)+min+row_range/2)
+		}
+
+		res += fmt.Sprintf("%-*s │", len(fmt.Sprintf("%.2f", max)), avg_row_val)
+		for column := 0; column < len(finalArr[row]); column++ {
+			res += finalArr[row][column]
 		}
 		res += "\n"
 	}
-	res += fmt.Sprintf("%.2f", min)
 
-	return res
+	return strings.TrimRight(res, "\n")
 }

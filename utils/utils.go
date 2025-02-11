@@ -77,3 +77,10 @@ func (q *Queue[T]) ToSlice() []T {
 func (q *Queue[T]) Length() int {
 	return q.Size
 }
+
+func Max[T ~int | ~float64](a, b T) T {
+	if a > b {
+		return a
+	}
+	return b
+}

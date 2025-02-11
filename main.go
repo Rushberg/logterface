@@ -10,21 +10,7 @@ import (
 )
 
 func main() {
-	hm, lm, refresh := config.ParseConfig("./example/config.json")
-	// hm.ProcessLog("number: 1")
-	// hm.ProcessLog("number: 2")
-	// hm.ProcessLog("number: 3")
-	// hm.ProcessLog("number: 4")
-	// hm.ProcessLog("number: 5")
-	// hm.ProcessLog("number: 6")
-	// hm.ProcessLog("number: 5")
-	// hm.ProcessLog("number: 4")
-	// hm.ProcessLog("number: 3")
-	// hm.ProcessLog("number: 3")
-	// hm.ProcessLog("number: 5")
-	// hm.ProcessLog("number: 6")
-	// lm.Print()
-	// return
+	hm, lm, refresh := config.ParseConfig(os.Args[1])
 
 	go Printer(lm, refresh)
 	// Create a scanner to read from os.Stdin
