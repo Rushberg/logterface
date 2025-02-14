@@ -57,20 +57,35 @@ func ParseConfig(filePath string) (*handlers.HandlerManager, *layouts.LayoutMana
 			method, _ := handlers.MethodFromString(utils.Capitalize(methodName))
 			name, _ := hc.Params["name"].(string)
 			lh := handlers.NewNumbersHandler(name, hc.RegEx, method)
+			thm, exists := hc.Params["thresholdMethod"]
+			if exists {
+				lh.ThresholdMethod, _ = handlers.ThresholdMethodFromString(utils.Capitalize(thm.(string)))
+				lh.Threshold, _ = hc.Params["threshold"].(float64)
+			}
+
 			hm.AddHandler(lh)
 			handlersMap[hc.Id] = lh
-		case "Counter":
-			name, _ := hc.Params["name"].(string)
-			ch := handlers.NewCounterHandler(name, hc.RegEx)
-			hm.AddHandler(ch)
-			handlersMap[hc.Id] = ch
 		case "Graph":
 			name, _ := hc.Params["name"].(string)
-			length, _ := hc.Params["length"].(float64)
+			width, _ := hc.Params["width"].(float64)
 			height, _ := hc.Params["height"].(float64)
-			gh := handlers.NewGraphHandler(name, hc.RegEx, int(length), int(height))
+			gh := handlers.NewGraphHandler(name, hc.RegEx, int(width), int(height))
 			hm.AddHandler(gh)
 			handlersMap[hc.Id] = gh
+		case "Progress":
+			width, _ := hc.Params["width"].(float64)
+			name, _ := hc.Params["name"].(string)
+			ph := handlers.NewProgressHandler(name, hc.RegEx, int(width))
+			dt, exists := hc.Params["defaultTotal"]
+			if exists {
+				ph.DefaultTotalValue = dt.(float64)
+			}
+			rt, exists := hc.Params["regexTotal"]
+			if exists {
+				ph.RegexTotalValue = rt.(string)
+			}
+			hm.AddHandler(ph)
+			handlersMap[hc.Id] = ph
 		}
 	}
 	lm := layouts.NewLayoutManager()
@@ -86,12 +101,6 @@ func ParseConfig(filePath string) (*handlers.HandlerManager, *layouts.LayoutMana
 				ll.AddHandler(handlersMap[hlc.Id])
 			}
 			lm.AddLayout(ll)
-		case "Chunk":
-			cl := layouts.NewChunkLayout()
-			for _, hlc := range lc.Handlers {
-				cl.AddHandler(handlersMap[hlc.Id])
-			}
-			lm.AddLayout(cl)
 		}
 	}
 	return &hm, &lm, config.Refresh

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"regexp"
 	"unicode"
 )
 
@@ -83,4 +84,17 @@ func Max[T ~int | ~float64](a, b T) T {
 		return a
 	}
 	return b
+}
+
+func Min[T ~int | ~float64](a, b T) T {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func StripANSI(s string) string {
+	// Regular expression to match ANSI escape sequences
+	re := regexp.MustCompile(`\x1b\[[0-9;]*[mK]`)
+	return re.ReplaceAllString(s, "")
 }

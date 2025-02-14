@@ -75,7 +75,9 @@ func (gh *GraphHandler) GetValue() string {
 		}
 	}
 	prevRow := int(math.Floor(((slice[0] - min) / diff) * float64(gh.height-1)))
-	for coulumn, val := range slice {
+	// sometimes it doesn't dequeu in time hence Min
+	for coulumn := 0; coulumn < utils.Min(gh.dataLength, len(slice)); coulumn++ {
+		val := slice[coulumn]
 		adjusted := ((val - min) / diff) * float64(gh.height-1)
 		currRow := int(math.Floor(adjusted))
 		var direction int

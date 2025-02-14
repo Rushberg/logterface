@@ -2,9 +2,19 @@
     "refresh_mills": 500,
     "handlers": [
         {
+            "type": "Graph",
+            "id": "graph",
+            "regex": ".*number: (\\d+)",
+            "params": {
+                "name": "Numbers Graph",
+                "width": 50,
+                "height": 15
+            }
+        },
+        {
             "type": "Numbers",
-            "id": "max_num",
-            "regex": ".*: (\\d+)",
+            "id": "max",
+            "regex": ".*number: (\\d+)",
             "params": {
                 "name": "Max Number",
                 "method": "max"
@@ -12,8 +22,8 @@
         },
         {
             "type": "Numbers",
-            "id": "min_num",
-            "regex": ".*: (\\d+)",
+            "id": "min",
+            "regex": ".*number: (\\d+)",
             "params": {
                 "name": "Min Number",
                 "method": "min"
@@ -21,57 +31,87 @@
         },
         {
             "type": "Numbers",
-            "id": "last_num",
-            "regex": ".*: (\\d+)",
-            "params": {
-                "name": "Last Number",
-                "method": "latest"
-            }
-        },
-        {
-            "type": "Numbers",
             "id": "avg",
-            "regex": ".*: (\\d+)",
+            "regex": ".*number: (\\d+)",
             "params": {
                 "name": "Avarage",
                 "method": "avg"
             }
         },
         {
-            "type": "Counter",
-            "id": "count",
-            "regex": ".*: 1\\d?",
+            "type": "Progress",
+            "id": "progress",
+            "regex": "progress: (\\d+)",
             "params": {
-                "name": "Numbers starting with 1"
+                "name": "Progress",
+                "defaultTotal": 1000,
+                "width": 100
             }
         },
         {
             "type": "Numbers",
-            "id": "sum",
-            "regex": ".*: (1\\d*)",
+            "id": "processed",
+            "regex": "progress: (\\d+)",
             "params": {
-                "name": "Their Sum",
-                "method": "sum"
+                "name": "Processed",
+                "method": "latest"
             }
         },
         {
-            "type": "Graph",
-            "id": "graph1",
-            "regex": ".*: (\\d{2})",
+            "type": "Numbers",
+            "id": "total",
+            "regex": "target: (\\d+)",
             "params": {
-                "name": "First 2 digits Graph",
-                "length": 50,
-                "height": 15
+                "name": "Out of",
+                "method": "latest"
             }
         },
         {
-            "type": "Graph",
-            "id": "graph2",
-            "regex": ".*: \\d*(\\d{2})$",
+            "type": "Progress",
+            "id": "usage",
+            "regex": "resources usage: (\\d+)/\\d+",
             "params": {
-                "name": "Last 2 digits Graph",
-                "length": 50,
-                "height": 15
+                "name": "Resources Usage",
+                "regexTotal": "resources usage: \\d+/(\\d+)",
+                "width": 100
+            }
+        },
+        {
+            "type": "Numbers",
+            "id": "used",
+            "regex": "resources usage: (\\d+)/\\d+",
+            "params": {
+                "name": "Used",
+                "method": "latest"
+            }
+        },
+        {
+            "type": "Numbers",
+            "id": "total_res",
+            "regex": "resources usage: \\d+/(\\d+)",
+            "params": {
+                "name": "Available",
+                "method": "latest"
+            }
+        },
+        {
+            "type": "Numbers",
+            "id": "errors",
+            "regex": "error: .*",
+            "params": {
+                "name": "Errors",
+                "method": "count",
+                "thresholdMethod": "lt",
+                "threshold": 50
+            }
+        },
+        {
+            "type": "Numbers",
+            "id": "last_err",
+            "regex": "error: Uh oh! Something bad happened. Code:(\\d+)",
+            "params": {
+                "name": "Last error code",
+                "method": "latest"                
             }
         }
     ],
@@ -79,20 +119,20 @@
         {
             "type": "Pipe"
         },
-        {
+        {            
             "type": "Line",
             "handlers": [
                 {
-                    "id": "max_num"
+                    "id": "graph"
                 },
                 {
-                    "id": "graph1"
+                    "id": "max"
                 },
                 {
-                    "id": "graph2"
+                    "id": "min"
                 },
                 {
-                    "id": "min_num"
+                    "id": "avg"
                 }
             ]
         },
@@ -100,10 +140,38 @@
             "type": "Line",
             "handlers": [
                 {
-                    "id": "count"
+                    "id": "usage"
                 },
                 {
-                    "id": "sum"
+                    "id": "used"
+                },
+                {
+                    "id": "total_res"
+                }
+            ]
+        },        
+        {
+            "type": "Line",
+            "handlers": [
+                {
+                    "id": "errors"
+                },
+                {
+                    "id": "last_err"
+                }
+            ]
+        },
+        {
+            "type": "Line",
+            "handlers": [
+                {
+                    "id": "progress"
+                },
+                {
+                    "id": "processed"
+                },
+                {
+                    "id": "total"
                 }
             ]
         }
