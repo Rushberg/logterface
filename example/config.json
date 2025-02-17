@@ -99,7 +99,7 @@
             "id": "errors",
             "regex": "error: .*",
             "params": {
-                "name": "Errors",
+                "name": "Total errors",
                 "method": "count",
                 "thresholdMethod": "lt",
                 "threshold": 50
@@ -112,6 +112,16 @@
             "params": {
                 "name": "Last error code",
                 "method": "latest"                
+            }
+        },
+        {
+            "type": "Filter",
+            "id": "filter",
+            "regex": "error.*",
+            "params": {
+                "name": "Latest errors",
+                "width": 50,
+                "length": 10
             }
         }
     ],
@@ -153,6 +163,9 @@
         {
             "type": "Line",
             "handlers": [
+                {
+                    "id": "filter"
+                },
                 {
                     "id": "errors"
                 },

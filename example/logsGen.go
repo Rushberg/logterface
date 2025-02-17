@@ -19,10 +19,10 @@ func main() {
 			fmt.Printf("progress: %d\n", progress%1001)
 			progress++
 		case 3:
-			fmt.Printf("error: Uh oh! Something bad happened. Code:%d\n", rand.Intn(10))
+			fmt.Printf("error: Uh oh! Something bad happened. Code:%d\n", rand.Intn(20))
 			progress++
 		case 4:
-			usage += -5 + rand.Intn(10)
+			usage += -5 + rand.Intn(11)
 			usage = utils.Max(10, utils.Min(100, usage))
 			fmt.Printf("resources usage: %d/100\n", usage)
 		}

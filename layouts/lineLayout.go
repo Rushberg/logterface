@@ -73,7 +73,7 @@ func (ll *LineLayout) Print() int {
 			// Center-align the row content
 			indent := float64(borderLength-maxRowLength) / 2
 			front := int(math.Floor(indent))
-			back := int(math.Ceil(indent))
+			back := int(math.Ceil(indent)) + utils.Max(maxRowLength-utf8.RuneCountInString(rowContent), 0)
 			rows[i+1] += fmt.Sprintf("%-*s%s%-*s", front, "", rowContent, back, "")
 		}
 

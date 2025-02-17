@@ -86,6 +86,13 @@ func ParseConfig(filePath string) (*handlers.HandlerManager, *layouts.LayoutMana
 			}
 			hm.AddHandler(ph)
 			handlersMap[hc.Id] = ph
+		case "Filter":
+			name, _ := hc.Params["name"].(string)
+			width, _ := hc.Params["width"].(float64)
+			length, _ := hc.Params["length"].(float64)
+			fh := handlers.NewFilterHandler(name, hc.RegEx, int(length), int(width))
+			hm.AddHandler(fh)
+			handlersMap[hc.Id] = fh
 		}
 	}
 	lm := layouts.NewLayoutManager()
