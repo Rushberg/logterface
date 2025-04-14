@@ -14,18 +14,20 @@ func main() {
 
 	go Printer(lm, refresh)
 	// Create a scanner to read from os.Stdin
-	scanner := bufio.NewScanner(os.Stdin)
+	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
 
-	// Read input line by line
-	for scanner.Scan() {
-		line := scanner.Text() // Get the current line
+	for {
+		line, err := reader.ReadString('\n') // Read input until newline
+		if err != nil {
+			if err.Error() == "EOF" {
+				break
+			}
+			fmt.Fprintln(os.Stderr, "Error reading input:", err)
+		}
 		hm.ProcessLog(line)
 	}
-
-	// Check for errors
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "Error reading input:", err)
-	}
+	// print last batch
+	time.Sleep(time.Duration(refresh+5000) * time.Millisecond)
 }
 
 func Printer(lm *layouts.LayoutManager, refresh int) {
