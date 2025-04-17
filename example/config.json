@@ -121,7 +121,7 @@
             "params": {
                 "name": "Latest errors",
                 "width": 50,
-                "length": 10
+                "length": 3
             }
         }
     ],

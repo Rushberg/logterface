@@ -6,6 +6,7 @@ import (
 	"logterface/config"
 	"logterface/layouts"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -24,7 +25,7 @@ func main() {
 			}
 			fmt.Fprintln(os.Stderr, "Error reading input:", err)
 		}
-		hm.ProcessLog(line)
+		hm.ProcessLog(strings.TrimSuffix(line, "\n"))
 	}
 	// print last batch
 	time.Sleep(time.Duration(refresh+5000) * time.Millisecond)
